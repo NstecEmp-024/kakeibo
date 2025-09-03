@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+</head>
+<style>
+    div#header {
+        background-color: rgb(229, 132, 132);
+        height: 100px;
+    }
+
+    div#footer {
+        background-color: rgb(229 132, 132);
+        clear: left;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<body>
+    <!-- ヘッダー部分 -->
+    <div th:fragment="header" id="header" style="text-align: center; border-bottom: 2px solid rgb(229, 132, 132)">
+        <h1 style="color: rgb(1, 7, 16)">家計簿＠自立研修</h1>
+        <a href="/admin/expense/expense-add" style="color: rgb(0, 12, 0)">収支登録</a>
+        <a href="/admin/expense/list" style="color: rgb(0, 11, 0)">収支一覧</a>
+        <a href="/admin/category/category-add" style="color: rgb(0, 11, 0)">カテゴリ登録</a>
+        <!--グラフのURL未定-->
+        <a href="/admin/" style="color: rgb(2, 14, 2)">グラフ表示</a>
+        <form th:action="@{/logout}" method="post">
+        </form>
+    </div>
+    <!-- フッター部分 -->
+    <div th:fragment="footer" id="footer" ; style="text-align: center; border-top: 2px solid rgb(229, 132, 132)">
+        <p style="color: rgb(229, 132, 132)">W7393　榎本優惟</p>
+    </div>
+</body>
+
+</html>
