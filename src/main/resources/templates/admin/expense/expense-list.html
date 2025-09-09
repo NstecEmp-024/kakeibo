@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>支出一覧</title>
+</head>
+
+<body>
+    <h1>支出リスト</h1>
+    <ul>
+        <li>支出項目
+            <a th:href="@{/admin/expense/update}">編集</a>
+            <a th:href="@{/admin/expense/delete}">削除</a>
+        </li>
+    </ul>
+    <a th:href="@{/admin/menu}">戻る</a>
+</body>
+
+</html>

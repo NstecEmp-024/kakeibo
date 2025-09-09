@@ -31,4 +31,9 @@ public class ExpenseService {
     public void deleteById(Long id) {
         expenseRepository.deleteById(id);
     }
+
+    public List<Expense> findBySessionId(String sessionId) {
+        return expenseRepository.findBySessionId(sessionId);
+    }
+
 }

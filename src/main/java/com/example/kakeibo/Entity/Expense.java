@@ -17,9 +17,9 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    private String sessionId; // セッションIDを追加
+
     private String category;
     private Integer amount;
     private String memo;
-
 }

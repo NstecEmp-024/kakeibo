@@ -4,6 +4,7 @@ import com.example.kakeibo.Entity.Budget;
 import com.example.kakeibo.service.BudgetsService;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +19,8 @@ public class BudgetsController {
     }
 
     @GetMapping
-    public List<Budget> getAllBudgets() {
-        return budgetsService.findAll();
+    public List<Budget> getAllBudgets(HttpSession session) {
+        return budgetsService.findBySessionId(session.getId());
     }
 
     @GetMapping("/{id}")
@@ -28,7 +29,8 @@ public class BudgetsController {
     }
 
     @PostMapping
-    public Budget createBudget(@RequestBody Budget budget) {
+    public Budget createBudget(@RequestBody Budget budget, HttpSession session) {
+        budget.setSessionId(session.getId()); // セッションIDを保存
         return budgetsService.save(budget);
     }
 

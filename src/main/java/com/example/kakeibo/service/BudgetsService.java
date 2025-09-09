@@ -1,6 +1,7 @@
 package com.example.kakeibo.service;
 
 import com.example.kakeibo.Entity.Budget;
+import com.example.kakeibo.Entity.Expense;
 import com.example.kakeibo.Repository.BudgetRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,4 +32,8 @@ public class BudgetsService {
     public void deleteById(Long id) {
         budgetsRepository.deleteById(id);
     }
+    public List<Budget> findBySessionId(String sessionId) {
+    return budgetsRepository.findBySessionId(sessionId);
+}
+
 }
