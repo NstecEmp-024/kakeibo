@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>カテゴリー追加完了</title>
+</head>
+
+<body>
+    <div th:replace="~{fragment/fragment::header}"></div>
+    <div style="text-align: center;">
+
+
+        <h3>カテゴリーが追加されました！</h3>
+        <p>追加したカテゴリー: <span th:text="${category.name}"></span></p>
+        <p>予算額: <span th:text="${budget.amount}"></span> 円</p>
+
+        <a th:href="@{/admin/menu}">メニューへ戻る</a>
+
+        <div th:replace="~{fragment/fragment::footer}"></div>
+</body>
+
+</html>

@@ -7,12 +7,18 @@
 </head>
 
 <body>
+     <div th:replace="fragment/fragment::header"></div>
+    <div layout:fragment="content">
+        <div style="text-align: center;">
+
     <h1>支出編集/削除画面</h1>
     <form action="#" method="post">
         <label>金額: <input type="number" name="amount"></label><br>
         <button type="submit">保存/削除</button>
     </form>
     <a th:href="@{/admin/expense/complete}">完了画面へ</a>
+     <div th:insert="fragment/fragment::footer"></div>
+
 </body>
 
 </html>

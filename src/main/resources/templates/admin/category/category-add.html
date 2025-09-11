@@ -7,12 +7,20 @@
 </head>
 
 <body>
-    <h1>カテゴリー追加画面</h1>
-    <form action="#" method="post">
-        <label>カテゴリー名: <input type="text" name="name"></label>
-        <button type="submit">追加</button>
-    </form>
-    <a th:href="@{/admin/menu}">戻る</a>
+    <div th:replace="~{fragment/fragment::header}"></div>
+    <div style="text-align: center;">
+
+
+        <h2>カテゴリー追加</h2>
+        <form th:action="@{/admin/category/category-add}" method="post">
+            <label>カテゴリー名:</label>
+            <input type="text" name="name" required><br><br>
+            <label>予算額:</label>
+            <input type="number" name="amount" required><br><br>
+            <button type="submit">追加</button>
+        </form>
+
+        <div th:replace="~{fragment/fragment::footer}"></div>
 </body>
 
 </html>

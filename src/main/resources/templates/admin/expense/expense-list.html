@@ -7,6 +7,10 @@
 </head>
 
 <body>
+     <div th:replace="fragment/fragment::header"></div>
+    <div layout:fragment="content">
+        <div style="text-align: center;">
+
     <h1>支出リスト</h1>
     <ul>
         <li>支出項目
@@ -15,6 +19,7 @@
         </li>
     </ul>
     <a th:href="@{/admin/menu}">戻る</a>
+     <div th:insert="fragment/fragment::footer"></div>
 </body>
 
 </html>

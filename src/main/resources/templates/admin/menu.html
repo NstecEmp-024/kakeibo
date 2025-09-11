@@ -7,14 +7,20 @@
 </head>
 
 <body>
-    <h1>メニュー画面</h1>
-    <ul>
-        <li><a th:href="@{/admin/category/category-add}">カテゴリー追加</a></li>
-        <li><a th:href="@{/admin/category/list}">カテゴリー一覧</a></li>
-        <li><a th:href="@{/admin/budget/set-budget}">予算追加</a></li>
-        <li><a th:href="@{/admin/expense/expense-add}">支出登録</a></li>
-        <li><a th:href="@{/admin/expense/list}">支出一覧</a></li>
-    </ul>
+    <div th:replace="fragment/fragment::header"></div>
+    <div layout:fragment="content">
+        <div style="text-align: center;">
+            <h1>メニュー画面</h1>
+            <ul>
+                <li><a th:href="@{/admin/category/category-add}">カテゴリー登録</a></li>
+                <li><a th:href="@{/admin/category/list}">カテゴリー一覧</a></li>
+                <li><a th:href="@{/admin/expense/expense-add}">支出登録</a></li>
+                <li><a th:href="@{/admin/expense/list}">支出一覧</a></li>
+                <!--グラフに関してURL未定-->
+                <li><a th:href="@{/admin/budget/a}">支出グラフ</a></li>
+            </ul>
+            <div th:insert="fragment/fragment::footer"></div>
+
 </body>
 
 </html>

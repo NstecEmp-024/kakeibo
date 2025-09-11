@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>カテゴリー一覧</title>
+</head>
+
+<body>
+    <div th:replace="fragment/fragment::header"></div>
+    <div layout:fragment="content">
+        <div style="text-align: center;">
+
+            <h1>カテゴリー一覧</h1>
+            <ul>
+                <li th:each="c : ${categories}">
+                    <span th:text="${c.name}"></span>
+                    <a th:href="@{/admin/budget/set-budget/{categoryId}(categoryId=${c.id})}">予算編集</a>
+                </li>
+            </ul>
+            <div th:insert="fragment/fragment::footer"></div>
+
+</body>
+
+</html>

@@ -7,8 +7,12 @@
 </head>
 
 <body>
+    <div th:replace="fragment/fragment::header"></div>
+    <div layout:fragment="content">
+        <div style="text-align: center;">
     <h1>支出登録完了</h1>
     <a th:href="@{/admin/menu}">メニューへ戻る</a>
+     <div th:insert="fragment/fragment::footer"></div>
 </body>
 
 </html>
