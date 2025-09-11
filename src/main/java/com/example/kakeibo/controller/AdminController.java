@@ -2,8 +2,10 @@ package com.example.kakeibo.controller;
 
 import com.example.kakeibo.Entity.Budget;
 import com.example.kakeibo.Entity.Category;
+import com.example.kakeibo.Entity.Expense;
 import com.example.kakeibo.Repository.BudgetRepository;
 import com.example.kakeibo.Repository.CategoryRepository;
+import com.example.kakeibo.Repository.ExpenseRepository;
 import com.example.kakeibo.form.CategoryBudgetForm;
 
 import jakarta.servlet.http.HttpSession;
@@ -16,10 +18,13 @@ public class AdminController {
 
     private final BudgetRepository budgetRepository;
     private final CategoryRepository categoryRepository;
+    private final ExpenseRepository expenseRepository;
 
-    public AdminController(BudgetRepository budgetRepository, CategoryRepository categoryRepository) {
+    public AdminController(BudgetRepository budgetRepository, CategoryRepository categoryRepository,
+            ExpenseRepository expenseRepository) {
         this.budgetRepository = budgetRepository;
         this.categoryRepository = categoryRepository;
+        this.expenseRepository = expenseRepository;
     }
 
     // メニュー画面
@@ -38,76 +43,22 @@ public class AdminController {
 
     @PostMapping("/admin/category/category-add")
     public String saveCategoryWithBudget(@ModelAttribute CategoryBudgetForm form, Model model) {
-
-        // Category を作成
         Category category = new Category();
         category.setName(form.getName());
         categoryRepository.save(category);
 
-        // Budget を作成
         Budget budget = new Budget();
         budget.setCategory(category);
         budget.setAmount(form.getAmount());
         budgetRepository.save(budget);
 
-        // 完了画面に表示
         model.addAttribute("category", category);
         model.addAttribute("budget", budget);
 
         return "admin/category/complete";
     }
 
-    // カテゴリーと予算の追加処理
-    // @PostMapping("/admin/category/category-add")
-    // public String saveCategoryWithBudget(@ModelAttribute Category category,
-    // @RequestParam("amount") Integer amount,
-    // Model model) {
-    // // カテゴリー保存
-    // categoryRepository.save(category);
-
-    // // 予算保存
-    // Budget budget = new Budget();
-    // budget.setCategory(category);
-    // budget.setAmount(amount);
-    // budgetRepository.save(budget);
-
-    // model.addAttribute("category", category);
-    // return "admin/category/complete"; // 追加完了画面に遷移
-    // }
-
-    // // カテゴリー追加画面
-    // @GetMapping("/admin/category/category-add")
-    // public String categoryAdd(Model model) {
-    // model.addAttribute("category", new Category());
-    // return "admin/category/category-add";
-    // }
-
-    // // カテゴリー追加処理
-    // @PostMapping("/admin/category/category-add")
-    // public String saveCategory(@ModelAttribute Category category, Model model) {
-    // categoryRepository.save(category);
-    // model.addAttribute("category", category);
-    // return "admin/category/complete"; // 追加完了画面に遷移
-    // }
-
-    // // カテゴリー追加完了画面
-    // @GetMapping("/admin/category/complete")
-    // public String categoryComplete() {
-    // return "admin/category/complete";
-    // }
-
-    // カテゴリーリスト画面
-    // @GetMapping("/admin/category/list")
-    // public String categoryList(Model model) {
-    // model.addAttribute("categories", categoryRepository.findAll());
-    // return "admin/category/category-list";
-    // }
-
-    // 予算編集画面表示
-
-    // 予算追加画面
-
-       // カテゴリー一覧
+    // カテゴリー一覧
     @GetMapping("/admin/category/list")
     public String categoryList(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
@@ -127,7 +78,7 @@ public class AdminController {
         return "admin/budget/set-budget";
     }
 
-        // 予算保存（POST）
+    // 予算保存（POST）
     @PostMapping("/admin/budget/set-budget")
     public String saveBudget(@ModelAttribute Budget budget, HttpSession session) {
         budget.setSessionId(session.getId());
@@ -143,12 +94,31 @@ public class AdminController {
 
     // 支出登録画面
     @GetMapping("/admin/expense/expense-add")
-    public String expenseAdd() {
+    public String expenseAdd(Model model) {
+        model.addAttribute("expense", new Expense());
+        model.addAttribute("categories", categoryRepository.findAll());
         return "admin/expense/expense-add";
     }
 
+    // 支出登録処理 (POST)
+    @PostMapping("/admin/expense/expense-add")
+    public String saveExpense(@ModelAttribute Expense expense,
+            @RequestParam Long categoryId,
+            HttpSession session) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + categoryId));
+
+        expense.setCategory(category);
+        expense.setSessionId(session.getId());
+
+        expenseRepository.save(expense);
+
+        // 完了画面にリダイレクト
+        return "redirect:/admin/expense/expense-complete";
+    }
+
     // 支出完了画面
-    @GetMapping("/admin/expense/complete")
+    @GetMapping("/admin/expense/expense-complete")
     public String expenseComplete() {
         return "admin/expense/expense-complete";
     }
