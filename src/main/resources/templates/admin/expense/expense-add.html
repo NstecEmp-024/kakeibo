@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>支出登録</title>
 </head>
+
 <body>
-<div th:replace="~{fragment/fragment::header}"></div>
+    <div th:replace="~{fragment/fragment::header}"></div>
 
-<div style="text-align: center;">
-    <h1>支出登録</h1>
-    <form th:action="@{/admin/expense/expense-add}" th:object="${expense}" method="post">
-        <label>支出名: <input type="text" th:field="*{name}" required></label><br><br>
-        <label>金額: <input type="number" th:field="*{amount}" required></label><br><br>
-        <label>カテゴリ:
-            <select name="categoryId" required>
-                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
-            </select>
-        </label><br><br>
-        <button type="submit">保存</button>
-    </form>
-    <a th:href="@{/admin/menu}">メニューへ戻る</a>
-</div>
+    <div style="text-align: center;">
+        <h1>支出登録</h1>
+        <form th:action="@{/admin/expense/add}" th:object="${expenseForm}" method="post">
+            <label>支出名: <input type="text" th:field="*{name}" required></label><br><br>
+            <label>金額: <input type="number" th:field="*{amount}" required></label><br><br>
+            <label>カテゴリ:
+                <select th:field="*{categoryId}" required>
+                    <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+                </select>
+            </label><br><br>
+            <button type="submit">保存</button>
+        </form>
+        <a th:href="@{/admin/menu}">メニューへ戻る</a>
+    </div>
 
-<div th:replace="~{fragment/fragment::footer}"></div>
+    <div th:replace="~{fragment/fragment::footer}"></div>
 </body>
+
 </html>

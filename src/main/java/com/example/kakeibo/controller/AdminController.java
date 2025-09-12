@@ -7,10 +7,14 @@ import com.example.kakeibo.Repository.BudgetRepository;
 import com.example.kakeibo.Repository.CategoryRepository;
 import com.example.kakeibo.Repository.ExpenseRepository;
 import com.example.kakeibo.form.CategoryBudgetForm;
+import com.example.kakeibo.form.ExpenseForm;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -93,32 +97,73 @@ public class AdminController {
     }
 
     // 支出登録画面
-    @GetMapping("/admin/expense/expense-add")
+    // @GetMapping("/admin/expense/expense-add")
+    // public String expenseAdd(Model model) {
+    // model.addAttribute("expense", new Expense());
+    // model.addAttribute("categories", categoryRepository.findAll());
+    // return "admin/expense/expense-add";
+    // }
+
+    // // 支出登録処理 (POST)
+    // @PostMapping("/admin/expense/expense-add")
+    // public String saveExpense(@ModelAttribute Expense expense,
+    // @RequestParam Long categoryId,
+    // HttpSession session) {
+    // Category category = categoryRepository.findById(categoryId)
+    // .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" +
+    // categoryId));
+
+    // expense.setCategory(category);
+    // expense.setSessionId(session.getId());
+
+    // expenseRepository.save(expense);
+
+    // // 完了画面にリダイレクト
+    // return "redirect:/admin/expense/expense-complete";
+    // }
+
+    // // 支出完了画面
+    // @GetMapping("/admin/expense/expense-complete")
+    // public String expenseComplete() {
+    // return "admin/expense/expense-complete";
+    // }
+
+    // GET: 登録画面
+    @GetMapping("/admin/expense/add")
     public String expenseAdd(Model model) {
-        model.addAttribute("expense", new Expense());
+        model.addAttribute("expenseForm", new ExpenseForm());
         model.addAttribute("categories", categoryRepository.findAll());
         return "admin/expense/expense-add";
     }
 
-    // 支出登録処理 (POST)
-    @PostMapping("/admin/expense/expense-add")
-    public String saveExpense(@ModelAttribute Expense expense,
-            @RequestParam Long categoryId,
-            HttpSession session) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + categoryId));
+    // POST: 登録処理
+    @PostMapping("/admin/expense/add")
+    public String saveExpense(@Valid @ModelAttribute("expenseForm") ExpenseForm form,
+            BindingResult bindingResult,
+            HttpSession session,
+            Model model) {
 
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryRepository.findAll());
+            return "admin/expense/expense-add";
+        }
+
+        Category category = categoryRepository.findById(form.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid category Id: " + form.getCategoryId()));
+
+        Expense expense = new Expense();
+        expense.setName(form.getName());
+        expense.setAmount(form.getAmount());
         expense.setCategory(category);
         expense.setSessionId(session.getId());
 
         expenseRepository.save(expense);
 
-        // 完了画面にリダイレクト
-        return "redirect:/admin/expense/expense-complete";
+        return "redirect:/admin/expense/complete";
     }
 
-    // 支出完了画面
-    @GetMapping("/admin/expense/expense-complete")
+    // 完了画面
+    @GetMapping("/admin/expense/complete")
     public String expenseComplete() {
         return "admin/expense/expense-complete";
     }
